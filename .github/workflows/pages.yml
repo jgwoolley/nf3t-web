@@ -39,11 +39,11 @@ jobs:
         with:
           node-version: "20.5.0"
           cache: 'pnpm'
-      - name: "ViteJS Project: Install dependencies"
+      - name: "NextJS Project: Install dependencies"
         run: pnpm install
-      - name: "ViteJS Project: Test"
+      - name: "NextJS Project: Test"
         run: pnpm run test
-      - name: "ViteJS Project: Build"
+      - name: "NextJS Project: Build"
         run: pnpm run build 
       # Deploy GitHub Pages            
       - name: Setup Pages
@@ -51,8 +51,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload dist repository
-          path: './apps/webtools/dist'
+          # Upload NextJS static export
+          path: './apps/webtools/out'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -68,22 +68,21 @@ export default function BuildProcess() {
             )
         },
         {
-            alt: "Run the ViteJS development server.",
+            alt: "Run the NextJS development server.",
             child: (
                 <>
-                    <p>Run the ViteJS development server.</p>
+                    <p>Run the NextJS development server.</p>
                     <ol>
                         <li><CodeSnippet submitSnackbarMessage={snackbarProps.submitSnackbarMessage} code="npm run dev" /></li>
                         <li>This command does the following:</li>
                         <ol>
-                            <li>Looks in "scripts" for "dev" <ExternalLink href="https://github.com/jgwoolley/Nifi-Flow-File-Helper/blob/main/package.json">package.json</ExternalLink> and runs the <code>vite</code> command as a child process.</li>
-                            <li>The <code>vite</code> plugin looks for <ExternalLink href="https://github.com/jgwoolley/Nifi-Flow-File-Helper/blob/main/vite.config.ts">vite.config.ts</ExternalLink>, and runs that script.</li>
+                            <li>Looks in "scripts" for "dev" <ExternalLink href="https://github.com/jgwoolley/nf3t-web/blob/main/apps/webtools/package.json">package.json</ExternalLink> and runs the <code>next dev</code> command as a child process.</li>
+                            <li>NextJS looks for <ExternalLink href="https://github.com/jgwoolley/nf3t-web/blob/main/apps/webtools/next.config.mjs">next.config.mjs</ExternalLink> and applies the static export configuration.</li>
                             <ol>
-                                <li>Runs <CodeSnippet submitSnackbarMessage={snackbarProps.submitSnackbarMessage} code="git log" /> to get some build information, which will be writen to <code>buildinfo.json</code>, and read by the Web Site.</li>
-                                <li>Runs the <ExternalLink href="https://vite-pwa-org.netlify.app/">VitePWA Plugin</ExternalLink> which creates files needed for the Web Site to be run as a PWA.</li>
-                                <li>Runs the <code>react</code> ViteJS plugin to create a ReactJS website.</li>
+                                <li>Runs <CodeSnippet submitSnackbarMessage={snackbarProps.submitSnackbarMessage} code="npm run build" /> to generate <code>buildinfo.json</code> and <code>nars.json</code> before the static export.</li>
+                                <li>Loads the NextJS app entrypoint from <ExternalLink href="https://github.com/jgwoolley/nf3t-web/blob/main/apps/webtools/app/page.tsx">app/page.tsx</ExternalLink> and mounts the existing client-side router.</li>
                                 <ol>
-                                    <li>Locates the <ExternalLink href="https://github.com/jgwoolley/Nifi-Flow-File-Helper/blob/main/index.html">index.html</ExternalLink> file, and utilizes the referenced <ExternalLink href="https://github.com/jgwoolley/Nifi-Flow-File-Helper/blob/main/src/main.tsx">/src/main.tsx</ExternalLink> to create the website.</li>
+                                    <li>Uses a client-only component to keep all route processing in the browser.</li>
                                 </ol>
                             </ol>
                             <li>Runs as a website on your local computer. It will run in hot module replace mode, so any changes you make will immediately be deployed.</li>
@@ -93,13 +92,13 @@ export default function BuildProcess() {
             )
         },
         {
-            alt: "Build the ViteJS SPA.",
+            alt: "Build the NextJS static export.",
             child: (
                 <>
-                    <p>Build the ViteJS SPA.</p>
+                    <p>Build the NextJS static export.</p>
                     <ol>
                         <li><CodeSnippet submitSnackbarMessage={snackbarProps.submitSnackbarMessage} code="npm run build" /></li>
-                        <li>Does everything in the "development server step", except it builds a SPA. This will not create a developer server, just the files needed to deploy the site.</li>
+                        <li>Does everything in the "development server step", except it creates a static export in the <code>out</code> directory for deployment.</li>
                     </ol>
                 </>
             )

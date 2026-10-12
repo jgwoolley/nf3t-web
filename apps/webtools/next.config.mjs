@@ -1,5 +1,4 @@
-const repository = process.env.GITHUB_REPOSITORY?.split('/')[1];
-const basePath = process.env.GITHUB_ACTIONS === 'true' && repository ? `/${repository}` : '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

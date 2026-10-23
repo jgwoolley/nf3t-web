@@ -18,11 +18,12 @@ import { UnpackageRoute} from "./unpackage/unpackage";
 import { ViewFlowFileRoute } from "./unpackage/unpackageFlowFileLookup";
 import { ViewFlowFilesRoute } from "./unpackage/unpackageFlowFileList";
 import { MergeCidrsRoute } from "./mergecidrs/MergeCidrsRoute";
-import { Nf2tCliRoute } from "./nf2tcli/nf2tcli";
-import { downloadMavenRoute } from "./mavenCoordinate/mavenCoordinate";
-import { mavenCoordinateListRoute } from "./mavenCoordinate/mavenCoordinateList";
+import { Nf3tCliRoute } from "./nf3tcli/nf3tcli";
 import { mavenCoordinateResolverRoute } from "./mavenCoordinate/mavenCoordinateResolver";
 import { PdfCombinerRoute } from "./pdfcombiner/PdfCombinerRoute";
+import { GithubPagesDnsRoute } from "./githubpagesdns/GithubPagesDnsRoute";
+import { AiStanceRoute } from "./aistance/AiStanceRoute";
+import { AvailabilityRoute } from "./availability/AvailabilityRoute";
 
 export const routeChildren = [
   buildInfo,
@@ -45,11 +46,12 @@ export const routeChildren = [
   settings,
   tagList,
   MergeCidrsRoute,
-  Nf2tCliRoute,
-  downloadMavenRoute,
-  mavenCoordinateListRoute,
+  Nf3tCliRoute,
   mavenCoordinateResolverRoute,
   PdfCombinerRoute,
+  GithubPagesDnsRoute,
+  AiStanceRoute,
+  AvailabilityRoute,
 ]
 
 export const routePaths = routeChildren.map(x => x.path);
@@ -78,8 +80,8 @@ const FlowFilePackagerV3Reference: SourceReference = {
 }
 
 const GithubRepositoryReference = {
-  url: "https://github.com/jgwoolley/Nifi-Flow-File-Helper",
-  name: "https://github.com/jgwoolley/Nifi-Flow-File-Helper",
+  url: "https://github.com/jgwoolley/nf3t-web",
+  name: "https://github.com/jgwoolley/nf3t-web",
   prefix: "The source code of this project is stored at ",
 }
 
@@ -114,7 +116,7 @@ export const routeDescriptions: Record<RoutePathType, RouteDescription> = {
   "/settings": {
     to: "/settings",
     name: "Program Settings",
-    shortDescription: "Change the settings for Nf2t Tools.",
+    shortDescription: "Change the settings for Nf3t Tools.",
   },
   "/technologiesInfo": {
     to: "/technologiesInfo",
@@ -126,10 +128,10 @@ export const routeDescriptions: Record<RoutePathType, RouteDescription> = {
     name: "Attributes Lookup",
     shortDescription: "Review Nifi Processors that either write to or read the attributes.",
   },
-  "/nf2tcli": {
-    to: "/nf2tcli",
-    name: "Nf2t Command Line Interface",
-    shortName: "Nf2t CLI",
+  "/nf3tcli": {
+    to: "/nf3tcli",
+    name: "Nf3t Command Line Interface",
+    shortName: "Nf3t CLI",
     shortDescription: "A Java CLI for parsing Apache NiFi FlowFileStreams.",
     description: "A Java CLI for parsing Apache NiFi FlowFileStreams. One or more FlowFiles can be serialized into a FlowFileStream, in one of three formats.",
   },
@@ -214,17 +216,7 @@ export const routeDescriptions: Record<RoutePathType, RouteDescription> = {
   "/mergecidrs": {
     to: "/mergecidrs",
     name: "Merge CIDRs",
-    shortDescription: "Merge Duplicate CIDRs.",
-  },
-  "/mavenCoordinate": {
-    to: "/mavenCoordinate",
-    name: "Download Maven Artifacts",
-    shortDescription: "Generate URLs for downloading Maven Artifacts.",
-  },
-  "/mavenCoordinateList": {
-    to: "/mavenCoordinateList",
-    name: "List Maven Coordinates",
-    shortDescription: "Generate URLs for downloading Maven Artifacts.",
+    shortDescription: "Merge duplicate, overlapping and adjacent IPv4 CIDRs.",
   },
   "/mavenCoordinateResolver": {
     to: "/mavenCoordinateResolver",
@@ -235,5 +227,21 @@ export const routeDescriptions: Record<RoutePathType, RouteDescription> = {
     to: "/pdfcombiner",
     name: "PDF Combiner",
     shortDescription: "Combines multiple PDFs into a single document.",
+  },
+  "/githubpagesdns": {
+    to: "/githubpagesdns",
+    name: "GitHub Pages DNS",
+    shortDescription: "Generate the DNS records for a GitHub Pages custom domain.",
+    description: "Enter a repository and a domain (plus an optional subdomain) to generate the DNS records and GitHub settings needed to serve a GitHub Pages site from a custom domain.",
+  },
+  "/availability": {
+    to: "/availability",
+    name: "Availability Calculator",
+    shortDescription: "Convert annual downtime into an uptime percentage, and back from common SLA targets.",
+  },
+  "/aistance": {
+    to: "/aistance",
+    name: "Stance on AI",
+    shortDescription: "",
   },
 }

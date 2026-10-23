@@ -4,14 +4,14 @@
   "version": "0.0.2",
   "type": "module",
   "main": "./dist/main.js",
-  "homepage": "https://github.com/jgwoolley/nf2t-web",
+  "homepage": "https://github.com/jgwoolley/nf3t-web",
   "types": "./dist/main.d.ts",
   "keywords": [ "NiFi", "FlowFile", "Nf2t"],
   "license": "Apache-2.0",
   "files": [ "./dist", "./src", "./tsconfig.json", "./tsup.config.ts" ],
   "repository": {
 		"type": "git",
-		"url": "https://github.com/jgwoolley/Nifi-Flow-File-Helper"
+		"url": "https://github.com/jgwoolley/nf3t-web"
 	},
   "scripts": {
     "build": "tsup",

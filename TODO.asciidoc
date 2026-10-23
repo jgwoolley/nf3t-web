@@ -8,29 +8,29 @@
 ** link:https://github.com/apache/nifi/blob/5f0cbed5a6a68e995dac8ba10695be6e432620c5/nifi-extension-bundles/nifi-standard-bundle/nifi-standard-processors/src/main/java/org/apache/nifi/processors/standard/UnpackContent.java#L636[UnpackContent.java]
 ** Package could work as an array of files like Unpackager. All flowfiles could be grouped together.
 
-* Nf2t Unpack
+* Nf3t Unpack
 ** Add JSZip unpacking option.
 ** Think about making unpacks not happining automatically but allow clicking and selecting to do this. Maybe make a table selection option for performaing actions?
 
-* Nf2t Lib
+* Nf3t Lib
 ** Remove id logic in unpackageFlowFile, it is not necissary
 ** Make a read only version of unpackageFlowFile so order of list entries perserved, as well as direct object
 
-* Nf2t Table 
+* Nf3t Table 
 ** Tried to implement in NewNf2tTable @tanstack/react-table. Remove import if it doesn't work.
 ** tabs for columns
 ** tables don't work too well.
-** Nf2t Table: regex filter does not work, only allowed to select full matches
+** Nf3t Table: regex filter does not work, only allowed to select full matches
 ** Button based filters on tables in Group vs selector (not exactly sure what this means)
 
-* Nf2t Nar Tool
+* Nf3t Nar Tool
 ** Nar downloads no longer work ... because the router takes over the .nar link
 ** a lot of nars are getting registered as artifactid: nifi-standard-services-api-nar
 ** Pressing NAR buttons doesn't always work.
 ** Downloading the example flow files one by one isn't tha fun
 ** Use regular manifest in readNar but also seperate extensionManifest / regularManifest / javascriptFile attributes in zod object...
 
-* Nf2t Unpack / Pack Consistancy
+* Nf3t Unpack / Pack Consistancy
 ** Upload buttons without persistant file state instead of file input?
 ** Attributes / Attributes name confusion. Unique vs non-Unique. use that language.
 * Add download all button that works without showDirectoryPicker API. Possibly with ZIP?
@@ -41,8 +41,8 @@
 
 * Unsorted
 ** Update name of Source to Nf2tSource, any anything else that looks generic.
-** Make a better Nf2t logo. Possibly the MUI Icon?
-** make github project name consitant with nf2t and node package.json
+** Make a better Nf3t logo. Possibly the MUI Icon?
+** make github project name consitant with Nf3t and node package.json
 ** Upload to the tool time?
 ** FlowFile Tools - Attribute Item is broken (confirm fix worked)
 ** Is there an alternative to renderToString??? https://react.dev/reference/react-dom/server/renderToString#removing-rendertostring-from-the-client-code

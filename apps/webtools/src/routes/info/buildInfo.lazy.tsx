@@ -51,7 +51,7 @@ export default function BuildProcess() {
                 <>
                     <p>Change directories into the newly created repository folder.</p>
                     <ol>
-                        <li><CodeSnippet submitSnackbarMessage={snackbarProps.submitSnackbarMessage} code="cd Nifi-Flow-File-Helper" /></li>
+                        <li><CodeSnippet submitSnackbarMessage={snackbarProps.submitSnackbarMessage} code="cd nf3t-web" /></li>
                     </ol>
                 </>
             )

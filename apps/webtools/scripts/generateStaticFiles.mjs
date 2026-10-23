@@ -14,19 +14,21 @@ const NARS_OUTPUT = `${OUTPUT_PATH}/nars.json`;
 
 function generateBuildinfo() {
   const gitSha = execSync('git rev-parse HEAD').toString().trim();
-  const gitShortSha = execSync('git rev-parse --short HEAD').toString().trim();
+  const gitAuthorName = execSync('git log -1 --pretty=%an').toString().trim();
+  const gitAuthorEmail = execSync('git log -1 --pretty=%ae').toString().trim();
+  const gitAuthorDate = execSync('git log -1 --pretty=%at').toString().trim();
   const gitMessage = execSync('git log -1 --pretty=%B').toString().trim();
-  const gitDate = execSync('git log -1 --date=iso-strict --pretty=%cd').toString().trim();
   const repository = process.env.GITHUB_REPOSITORY;
   const base = repository ? repository.split('/')[1] : undefined;
 
   return {
     base,
     git: {
-      SHA: gitSha,
-      shortSHA: gitShortSha,
-      date: gitDate,
-      message: gitMessage,
+      H: gitSha,
+      an: gitAuthorName,
+      ae: gitAuthorEmail,
+      at: gitAuthorDate,
+      B: gitMessage,
     },
     github: {
       base,

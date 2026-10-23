@@ -61,6 +61,7 @@ function Nf2tSettingsMenu() {
                 <Nf2tMenuItem to="/package" />
                 <Nf2tMenuItem to="/narReader" />
                 <Nf2tMenuItem to="/source" />
+                <Nf2tMenuItem to="/aistance" />
                 <Nf2tMenuItem to="/settings" />
                 <Tooltip title="External Apache Nifi Documentation.">
                     <MenuItem><ExternalLink style={{ ...linkStyles }} href="https://nifi.apache.org/docs.html">Nifi Docs</ExternalLink></MenuItem>
@@ -79,7 +80,7 @@ export function NifiAppBar() {
                     <Tooltip title={routeDescriptions["/"].shortDescription}>
                         <>
                             <WaterDropIcon sx={{mr: 1}}/>
-                            <Typography variant="h6" color="inherit" component="div"><Link style={{ color: "inherit", textDecoration: "inherit" }} to="/">Nifi FlowFile Tools (Nf2t)</Link></Typography>
+                            <Typography variant="h6" color="inherit" component="div"><Link style={{ color: "inherit", textDecoration: "inherit" }} to="/">Nifi FlowFile Tools (Nf3t)</Link></Typography>
                         </>
                     </Tooltip>
                     <div style={{ flex: 1 }} />

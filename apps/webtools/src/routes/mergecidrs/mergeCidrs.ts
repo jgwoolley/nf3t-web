@@ -1,121 +1,110 @@
-
 type IpRange = {
-    originals: string[],
     min: number,
     max: number,
 }
 
-export function deduplicateCIDRs(cidrs: string[]) {
-    const ranges: IpRange[] = [];
+export type MergeCidrsResult = {
+    cidrs: string[],
+    invalid: string[],
+}
 
-    // Convert CIDRs to an array of ranges
-    for(let cidr of cidrs) {
-        let [ip, prefix] = cidr.split('/');
-        if(prefix == undefined) continue;
-        let base = ipToNumber(ip);
-        if(base == 0) continue;
-        let size = Math.pow(2, 32 - Number(prefix));
-        ranges.push({
-            originals: [cidr],
-            min: base, 
-            max: base + size - 1,
-        });
+const IPV4_REGEX = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+
+function ipToNumber(ip: string): number | undefined {
+    const match = IPV4_REGEX.exec(ip);
+    if (match == null) {
+        return undefined;
     }
 
-    // Sort ranges by the starting IP
+    const octets = match.slice(1).map(Number);
+    if (octets.some(octet => octet > 255)) {
+        return undefined;
+    }
+
+    // Multiply instead of shifting, because bitwise operators work on signed 32 bit integers.
+    return octets.reduce((acc, octet) => acc * 256 + octet, 0);
+}
+
+function numberToIp(value: number): string {
+    return [24, 16, 8, 0].map(shift => Math.floor(value / 2 ** shift) % 256).join(".");
+}
+
+function cidrToRange(cidr: string): IpRange | undefined {
+    const [ip, prefixRaw, ...rest] = cidr.trim().split("/");
+    if (prefixRaw === undefined || rest.length > 0 || !/^\d{1,2}$/.test(prefixRaw)) {
+        return undefined;
+    }
+
+    const prefix = Number(prefixRaw);
+    const base = ipToNumber(ip);
+    if (base === undefined || prefix > 32) {
+        return undefined;
+    }
+
+    // Host bits are ignored, so 10.0.0.5/24 covers the same addresses as 10.0.0.0/24.
+    const size = 2 ** (32 - prefix);
+    const min = Math.floor(base / size) * size;
+    return { min, max: min + size - 1 };
+}
+
+/** The fewest CIDRs that cover exactly the addresses from start to end (inclusive). */
+function rangeToCidrs({ min, max }: IpRange): string[] {
+    const cidrs: string[] = [];
+    let start = min;
+
+    while (start <= max) {
+        // The largest block that starts on a boundary at `start`, and still fits before `max`.
+        let size = start === 0 ? 2 ** 32 : start & -start;
+        if (size < 0) {
+            size = 2 ** 31;
+        }
+        while (start + size - 1 > max) {
+            size /= 2;
+        }
+
+        cidrs.push(`${numberToIp(start)}/${32 - Math.log2(size)}`);
+        start += size;
+    }
+
+    return cidrs;
+}
+
+/** Merges overlapping and adjacent CIDRs. Lines that are not CIDRs (and blank lines) are returned in `invalid`. */
+export function mergeCIDRs(lines: string[]): MergeCidrsResult {
+    const ranges: IpRange[] = [];
+    const invalid: string[] = [];
+
+    for (const line of lines) {
+        if (line.trim() === "") {
+            continue;
+        }
+
+        const range = cidrToRange(line);
+        if (range === undefined) {
+            invalid.push(line.trim());
+        } else {
+            ranges.push(range);
+        }
+    }
+
     ranges.sort((a, b) => a.min - b.min);
 
-    // Merge overlapping and adjacent ranges
-    let mergedRanges = [];
-    let currentRange = ranges[0];
-
-    for (let i = 1; i < ranges.length; i++) {
-        let nextRange = ranges[i];
-        if (currentRange.max >= nextRange.min - 1) {
-            // Merge the ranges
-            currentRange.max = Math.min(currentRange.max, nextRange.max);
-            currentRange.originals.push(...nextRange.originals);
+    const merged: IpRange[] = [];
+    for (const range of ranges) {
+        const previous = merged[merged.length - 1];
+        if (previous !== undefined && range.min <= previous.max + 1) {
+            previous.max = Math.max(previous.max, range.max);
         } else {
-            mergedRanges.push(currentRange);
-            currentRange = nextRange;
+            merged.push({ ...range });
         }
     }
-    mergedRanges.push(currentRange);
 
-    // Convert merged ranges back to CIDRs
-    let deduplicatedCIDRs = mergedRanges.map(range => {
-        let start = range.min;
-        let end = range.max;
-        let cidrs = [];
-        while (start <= end) {
-            let size = largestCIDR(start, end);
-            let prefix = 32 - Math.log2(size);
-            cidrs.push(numberToIP(start) + '/' + prefix);
-            start += size;
-        }
-        return cidrs;
-    });
-
-    return deduplicatedCIDRs.flat();
+    return {
+        cidrs: merged.flatMap(rangeToCidrs),
+        invalid,
+    };
 }
 
-function ipToNumber(ip: string): number {
-    return ip.split('.').reduce((acc, octet) => (acc << 8) + Number(octet), 0) >>> 0;
+export function deduplicateCIDRs(cidrs: string[]): string[] {
+    return mergeCIDRs(cidrs).cidrs;
 }
-
-function numberToIP(number: number): string {
-    return [
-        (number >>> 24) & 0xff,
-        (number >>> 16) & 0xff,
-        (number >>> 8) & 0xff,
-        number & 0xff
-    ].join('.');
-}
-
-function largestCIDR(start: number, end: number) {
-    let size = 1;
-    while (start % size === 0 && start + size - 1 <= end) {
-        size *= 2;
-    }
-    return size / 2;
-}
-
-// // Test the function
-// console.log(deduplicateCIDRs([
-//     "10.0.0.0/24", "10.0.0.0/8", "198.0.0.0/24", "198.0.1.0/24",
-// ])); // Output: [ '10.0.0.0/8', '198.0.0.0/23' ]
-
-// console.log(deduplicateCIDRs([
-//     '1.1.0.0/24',
-//     '1.1.0.0/16',
-
-//     '10.0.255.0/24',
-
-//     '10.0.0.0/24',
-//     '10.0.1.0/24',
-//     '10.0.2.0/24',
-//     '10.0.3.0/24',
-
-//     '10.1.1.0/31',
-//     '10.1.1.2/31',
-
-//     '10.1.2.2/31',
-//     '10.1.2.4/31',
-
-//     '127.0.0.1/32',
-//     '127.0.0.2/32',
-//     '127.0.0.3/32',
-//     '127.0.0.4/32',
-// ]));
-
-// console.log([
-//     '1.1.0.0/24',
-//     '10.0.0.0/22',
-//     '10.0.255.0/24',
-//     '10.1.1.0/30',
-//     '10.1.2.2/31',
-//     '10.1.2.4/31',
-//     '127.0.0.1/32',
-//     '127.0.0.2/31',
-//     '127.0.0.4/32',
-// ])

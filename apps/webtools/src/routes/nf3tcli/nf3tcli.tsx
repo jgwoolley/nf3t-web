@@ -1,7 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import routeTree from "../rootRoute";
 
-export const Nf2tCliRoute = createRoute({
-    path: "/nf2tcli",
+export const Nf3tCliRoute = createRoute({
+    path: "/nf3tcli",
     getParentRoute: () => routeTree,
-}).lazy(() => import('./nf2tcli.lazy').then((d) => d.Route));
+}).lazy(() => import('./nf3tcli.lazy').then((d) => d.Route));

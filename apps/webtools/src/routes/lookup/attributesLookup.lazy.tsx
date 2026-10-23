@@ -36,7 +36,7 @@ export default function LookupAttribute() {
 
             {(nf2tAttributeDescription) && (
                 <>
-                    <h5>Attributes from Nf2t Tool</h5>
+                    <h5>Attributes from Nf3t Tool</h5>
                     <TableContainer component={Paper}>
                     <Table>
                         <TableBody>

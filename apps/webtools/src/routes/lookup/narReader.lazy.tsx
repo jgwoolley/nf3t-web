@@ -168,7 +168,7 @@ export default function NarReader() {
             </TableContainer>
 
             <h5>Download Examples</h5>
-            <p>Download the latest (at nf2t build time) Nars.</p>
+            <p>Download the latest (at nf3t build time) Nars.</p>
             <Button 
                 disabled={narLoader.isPending}
                 variant="outlined"

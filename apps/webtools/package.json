@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.0.2",
   "type": "module",
-  "homepage": "https://github.com/jgwoolley/nf2t-web",
+  "homepage": "https://github.com/jgwoolley/nf3t-web",
   "files": [
     "./out",
     "./public",
@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node ./scripts/generateStaticFiles.mjs && next build",
+    "build:no-games": "NEXT_PUBLIC_HIDE_GAME_TOOLS=true npm run build",
     "start": "next start"
   },
   "dependencies": {

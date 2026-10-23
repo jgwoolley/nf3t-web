@@ -12,7 +12,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { FileUploadOutlined } from "@mui/icons-material";
 
-export const Route = createLazyRoute("/mergecidrs")({
+export const Route = createLazyRoute("/pdfcombiner")({
     component: PdfCombinerComponent,
 })
 

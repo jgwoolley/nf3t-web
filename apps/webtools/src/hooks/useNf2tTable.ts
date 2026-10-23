@@ -220,7 +220,7 @@ export function useNf2tTable<R, C>({ childProps, snackbarProps, rows, columns, c
             const endIndex = startIndex + rowsPerPage;
 
             for(const [rowIndex, row] of filteredRows.entries()) {
-                if(rowIndex < startIndex || rowIndex > endIndex) {
+                if(rowIndex < startIndex || rowIndex >= endIndex) {
                     continue;
                 }
 

@@ -103,7 +103,7 @@ function SourceComponent() {
                         <>
                         <TableRow>
                             <TableCell>Commit</TableCell>
-                            <TableCell><ExternalLink href={`https://github.com/jgwoolley/Nifi-Flow-File-Helper/commit/${buildinfo.git.H}`}>{buildinfo.git.H}</ExternalLink></TableCell>
+                            <TableCell><ExternalLink href={`https://github.com/jgwoolley/nf3t-web/commit/${buildinfo.git.H}`}>{buildinfo.git.H}</ExternalLink></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Commit Message</TableCell>
